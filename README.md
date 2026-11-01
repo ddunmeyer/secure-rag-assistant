@@ -236,9 +236,9 @@ These tests run **without live Gemini API calls** — safety checks fail fast be
 
 ```bash
 pip install -r requirements.txt
-pytest
+python -m pytest
 ```
 
 ### Continuous integration
 
-GitHub Actions workflow `.github/workflows/tests.yml` runs `pytest` on every push and pull request.
+GitHub Actions workflow `.github/workflows/tests.yml` runs `python -m pytest` on every push and pull request.
