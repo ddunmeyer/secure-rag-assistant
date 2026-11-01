@@ -1,6 +1,19 @@
-# RAG Learning App
+# Secure RAG Assistant
 
-A Retrieval-Augmented Generation (RAG) application built with Python, ChromaDB, SentenceTransformers, and Google Gemini. You'll build this incrementally over Weeks 10–19.
+[![Tests](https://github.com/ddunmeyer/secure-rag-assistant/actions/workflows/tests.yml/badge.svg)](https://github.com/ddunmeyer/secure-rag-assistant/actions/workflows/tests.yml)
+
+A retrieval-augmented generation (RAG) assistant built with security controls at every pipeline boundary. Questions are validated before they reach the model, sensitive data is tagged and redacted, weak retrieval is filtered out, and answers are checked for hallucination before they are shown.
+
+Built with Python, LangChain, ChromaDB, SentenceTransformers and Google Gemini.
+
+## Security and reliability controls
+
+- **Input defense:** validation, sanitization and prompt-injection blocking before any LLM call, failing closed by default.
+- **Sensitive data handling:** PII, PHI and credential patterns are blocked at input and redacted from logs and error output.
+- **Data classification:** documents, user input, retrieved chunks and model output are tagged by sensitivity, data type and source.
+- **Retrieval quality:** query rewriting, multi-hop retrieval, similarity filtering and safe fallbacks.
+- **Output monitoring:** hallucination checks, with sources and confidence shown alongside each answer.
+- **Automated safety tests:** 16 pytest tests run in GitHub Actions on every push, with no live LLM calls.
 
 ## What This App Does
 
@@ -8,7 +21,7 @@ You can ask this app questions about Python, machine learning, databases, APIs, 
 
 ## System Architecture
 
-See **[ARCHITECTURE.md](ARCHITECTURE.md)** for the full Week 16 diagram and component explanations.
+See **[ARCHITECTURE.md](ARCHITECTURE.md)** for the full diagram and component explanations.
 
 ![Architecture Diagram](docs/rag-app-architecture-diagram.png)
 
@@ -18,13 +31,13 @@ See **[ARCHITECTURE.md](ARCHITECTURE.md)** for the full Week 16 diagram and comp
 User Query
     │
     ▼
-[security.py]      ← Validate and sanitize input (Week 12)
+[security.py]      ← Validate and sanitize input
     │
     ▼
-[compliance.py]    ← Tag metadata and redact sensitive data (Week 18)
+[compliance.py]    ← Tag metadata and redact sensitive data
     │
     ▼
-[workflow.py]      ← Rewrite query for better retrieval (Week 15)
+[workflow.py]      ← Rewrite query for better retrieval
     │
     ▼
 [embeddings.py]    ← Convert query to a vector
@@ -33,7 +46,7 @@ User Query
 [vector_store.py]  ← Find similar document vectors in ChromaDB
     │
     ▼
-[filters.py]       ← Remove irrelevant results (Week 14)
+[filters.py]       ← Remove irrelevant results
     │
     ▼
 [rag_pipeline.py]  ← Build prompt with retrieved context
@@ -42,7 +55,7 @@ User Query
   Gemini API       ← Generate answer
     │
     ▼
-[monitoring.py]    ← Check for hallucinations (Week 13)
+[monitoring.py]    ← Check for hallucinations
     │
     ▼
 [app.py]           ← Display answer, sources, confidence
@@ -52,8 +65,8 @@ User Query
 
 ### 1. Clone the repository
 ```bash
-git clone <repo-url>
-cd student-rag-project
+git clone https://github.com/ddunmeyer/secure-rag-assistant.git
+cd secure-rag-assistant
 ```
 
 ### 2. Create a virtual environment
@@ -100,17 +113,17 @@ The app opens in your browser at `http://localhost:8501`.
 | `data_loader.py` | Sample tech documents |
 | `rag_pipeline.py` | Central orchestration — ties everything together |
 | `langchain_engine.py` | LangChain engine (Chroma, embeddings, Gemini, LCEL / ReAct) |
-| `conversation.py` | Conversation history (Week 11) |
-| `security.py` | Input validation, injection defense, and data protection (Weeks 12 & 17) |
-| `compliance.py` | Metadata tagging and log redaction for sensitive data (Week 18) |
-| `tests/` | Automated unit and safety tests (Week 19) |
-| `.github/workflows/tests.yml` | GitHub Actions CI — runs pytest on push/PR (Week 19) |
-| `monitoring.py` | Hallucination detection (Week 13) |
-| `filters.py` | Similarity filtering and fallbacks (Week 14) |
-| `workflow.py` | Query rewriting and multi-hop retrieval (Week 15) |
+| `conversation.py` | Conversation history |
+| `security.py` | Input validation, injection defense, and data protection |
+| `compliance.py` | Metadata tagging and log redaction for sensitive data |
+| `tests/` | Automated unit and safety tests |
+| `.github/workflows/tests.yml` | GitHub Actions CI — runs pytest on push/PR |
+| `monitoring.py` | Hallucination detection |
+| `filters.py` | Similarity filtering and fallbacks |
+| `workflow.py` | Query rewriting and multi-hop retrieval |
 | `langchain_demo.py` | CLI test runner for the LangChain-backed `run_rag()` |
 | `LANGCHAIN.md` | LangChain architecture and configuration |
-| `ARCHITECTURE.md` | High-level architecture diagram and explanation (Week 16) |
+| `ARCHITECTURE.md` | High-level architecture diagram and explanation |
 | `docs/` | Architecture diagram PNG and editable Excalidraw file |
 
 ### LangChain pipeline
@@ -132,7 +145,7 @@ Set `RAG_MODE=react` in `.env` for the ReAct agent. See [LANGCHAIN.md](LANGCHAIN
 
 ---
 
-## Week 18 — Compliance (Metadata Tagging & Redaction)
+## Compliance (Metadata Tagging & Redaction)
 
 This section documents how the app handles sensitive data responsibly. This is **compliance-aware design**, not a SOC 2 certification.
 
@@ -196,7 +209,7 @@ Set `ENABLE_COMPLIANCE_LOGGING=true` in `.env` to emit redacted audit events to 
 
 ---
 
-## Week 19 — Testing & CI/CD
+## Testing & CI/CD
 
 ### What is tested
 
@@ -229,23 +242,3 @@ pytest
 ### Continuous integration
 
 GitHub Actions workflow `.github/workflows/tests.yml` runs `pytest` on every push and pull request.
-
----
-
-## Weekly Progress
-
-Update this checklist as you complete each week's assignment.
-
-- [x] Week 10 — Ran the starter app and explored the codebase
-- [x] Week 11 — Implemented conversation context
-- [x] Week 12 — Implemented input security
-- [x] Week 13 — Implemented hallucination monitoring
-- [x] Week 14 — Implemented filtering and fallbacks
-- [x] Week 15 — Implemented multi-step AI workflows
-- [x] Week 15.5 — LangChain pipeline (optional)
-- [x] Week 16 — Created architecture diagram and explanation
-- [x] Week 17 — Prompting vs RAG vs fine-tuning (conceptual; data protection in `security.py`)
-- [x] Week 18 — Compliance metadata tagging and redaction (`compliance.py`)
-- [x] Week 19 — Automated tests and GitHub Actions CI (`tests/`, `.github/workflows/tests.yml`)
-
----

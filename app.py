@@ -31,7 +31,7 @@ def build_conversation_history(chat_messages):
 # --- Page Configuration ---
 # This must be the FIRST Streamlit command called in the script.
 st.set_page_config(
-    page_title="RAG Learning App",
+    page_title="Secure RAG Assistant",
     page_icon="🔍",
     layout="wide",
 )
@@ -105,7 +105,7 @@ with st.sidebar:
     st.caption(get_compliance_notice())
 
 # --- Main Content ---
-st.title("RAG Learning App")
+st.title("Secure RAG Assistant")
 st.caption("Ask questions about Python, machine learning, databases, and AI concepts")
 
 # --- Display Chat History ---

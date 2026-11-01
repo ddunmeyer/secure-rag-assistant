@@ -1,6 +1,6 @@
 # RAG Application Architecture
 
-High-level architecture diagram for the RAG Learning App (Week 16).
+High-level architecture diagram for the Secure RAG Assistant.
 
 ![Architecture Diagram](docs/rag-app-architecture-diagram.png)
 
