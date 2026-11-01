@@ -21,4 +21,4 @@ jobs:
       - name: Run tests
         env:
           GEMINI_API_KEY: test-key-not-used-in-unit-tests
-        run: pytest
+        run: python -m pytest
